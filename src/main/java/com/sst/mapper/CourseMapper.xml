@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.CourseMapper">
+
+	<resultMap type="com.sst.entity.Course" id="Course">
+		<id column="id" property="id"/>
+		<result column="course_name"  property="courseName"/>
+		<result column="remark"  property="remark"/>
+	</resultMap>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Course">
+		insert into tb_course(
+			course_name,
+			remark
+		)values(
+			#{courseName},
+			#{remark}
+		)
+	</insert>
+
+	<select id="query" resultMap="Course">
+		select * from tb_course
+		<include refid="CourseFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_course
+		<include refid="CourseFindCriteria"/>
+	</select>
+
+	<select id="detail" resultMap="Course">
+		select * from tb_course where id = #{id}
+	</select>
+
+	<delete id="delete">
+		delete from tb_course where id = #{id}
+	</delete>
+	<update id="update">
+		update tb_course set
+			course_name=#{courseName},
+			remark=#{remark}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_course set
+			<if test="courseName != null and courseName != ''"> course_name = #{courseName}</if>,
+			<if test="remark != null and remark != ''"> remark = #{remark}</if>
+		where id = #{id}
+	</update>
+
+	<sql id="CourseFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="courseName != null and courseName != ''">and course_name = #{courseName}</if>
+			<if test="remark != null and remark != ''">and remark = #{remark}</if>
+		</where>
+	</sql>
+
+</mapper>

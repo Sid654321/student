@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.StudentMapper">
+
+	<resultMap type="com.sst.entity.Student" id="Student">
+		<id column="id" property="id"/>
+		<result column="stu_no"  property="stuNo"/>
+		<result column="stu_name"  property="stuName"/>
+		<result column="stu_pwd"  property="stuPwd"/>
+		<result column="card_no"  property="cardNo"/>
+		<result column="agender"  property="agender"/>
+		<result column="birthday"  property="birthday"/>
+		<result column="phone"  property="phone"/>
+		<result column="panme"  property="panme"/>
+		<result column="telephone"  property="telephone"/>
+		<result column="addr"  property="addr"/>
+		<result column="join_date"  property="joinDate"/>
+		<result column="status"  property="status"/>
+		<result column="clazz_id"  property="clazzId"/>
+		<result column="subject_id"  property="subjectId"/>
+	</resultMap>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Student">
+		insert into tb_student(
+			stu_no,
+			stu_name,
+			stu_pwd,
+			card_no,
+			agender,
+			birthday,
+			phone,
+			panme,
+			telephone,
+			addr,
+			join_date,
+			status,
+			clazz_id,
+			subject_id
+		)values(
+			#{stuNo},
+			#{stuName},
+			#{stuPwd},
+			#{cardNo},
+			#{agender},
+			#{birthday},
+			#{phone},
+			#{panme},
+			#{telephone},
+			#{addr},
+			#{joinDate},
+			#{status},
+			#{clazzId},
+			#{subjectId}
+		)
+	</insert>
+
+	<select id="query" resultMap="Student">
+		select * from tb_student
+		<include refid="StudentFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+	<select id="queryByTeacher" resultType="com.sst.entity.Student">
+		SELECT tb_student.id id,tb_student.stu_name stuName, tb_student.agender agender,tb_student.phone phone, tb_student.clazz_id  clazzId,status
+from tb_student  where tb_student.clazz_id in (SELECT clazz_id from tb_section where teacher_id = #{teacherId})
+    <if test="clazzId != null"> and tb_student.clazz_id = #{clazzId}</if>
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_student
+		<include refid="StudentFindCriteria"/>
+	</select>
+
+	<select id="detail" resultMap="Student">
+		select * from tb_student where id = #{id}
+	</select>
+	<select id="login" resultMap="Student">
+		select * from tb_student
+		<include refid="StudentFindCriteria"/>
+	</select>
+
+	<delete id="delete">
+		delete from tb_student where id = #{id}
+	</delete>
+	<update id="update">
+		update tb_student set
+			stu_no=#{stuNo},
+			stu_name=#{stuName},
+			stu_pwd=#{stuPwd},
+			card_no=#{cardNo},
+			agender=#{agender},
+			birthday=#{birthday},
+			phone=#{phone},
+			panme=#{panme},
+			telephone=#{telephone},
+			addr=#{addr},
+			join_date=#{joinDate},
+			status=#{status},
+			clazz_id=#{clazzId},
+			subject_id=#{subjectId}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_student set
+			<if test="stuNo != null and stuNo != ''"> stu_no = #{stuNo}</if>,
+			<if test="stuName != null and stuName != ''"> stu_name = #{stuName}</if>,
+			<if test="stuPwd != null and stuPwd != ''"> stu_pwd = #{stuPwd}</if>,
+			<if test="cardNo != null and cardNo != ''"> card_no = #{cardNo}</if>,
+			<if test="agender != null and agender != ''"> agender = #{agender}</if>,
+			<if test="birthday != null and birthday != ''"> birthday = #{birthday}</if>,
+			<if test="phone != null and phone != ''"> phone = #{phone}</if>,
+			<if test="panme != null and panme != ''"> panme = #{panme}</if>,
+			<if test="telephone != null and telephone != ''"> telephone = #{telephone}</if>,
+			<if test="addr != null and addr != ''"> addr = #{addr}</if>,
+			<if test="joinDate != null and joinDate != ''"> join_date = #{joinDate}</if>,
+			<if test="status != null and status != ''"> status = #{status}</if>,
+			<if test="clazzId != null">clazz_id = #{clazzId}</if>,
+			<if test="subjectId != null">subject_id = #{subjectId}</if>
+		where id = #{id}
+	</update>
+
+	<sql id="StudentFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="stuNo != null and stuNo != ''">and stu_no = #{stuNo}</if>
+			<if test="stuName != null and stuName != ''">and stu_name = #{stuName}</if>
+			<if test="stuPwd != null and stuPwd != ''">and stu_pwd = #{stuPwd}</if>
+			<if test="cardNo != null and cardNo != ''">and card_no = #{cardNo}</if>
+			<if test="agender != null and agender != ''">and agender = #{agender}</if>
+			<if test="phone != null and phone != ''">and phone = #{phone}</if>
+			<if test="panme != null and panme != ''">and panme = #{panme}</if>
+			<if test="telephone != null and telephone != ''">and telephone = #{telephone}</if>
+			<if test="addr != null and addr != ''">and addr = #{addr}</if>
+			<if test="status != null and status != ''">and status = #{status}</if>
+			<if test="clazzId != null">and clazz_id = #{clazzId}</if>
+			<if test="subjectId != null">and subject_id = #{subjectId}</if>
+		</where>
+	</sql>
+
+</mapper>

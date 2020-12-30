@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.RequestMapper">
+
+	<resultMap type="com.sst.entity.Request" id="Request">
+		<id column="id" property="id"/>
+		<result column="title"  property="title"/>
+		<result column="reason"  property="reason"/>
+		<result column="type"  property="type"/>
+		<result column="create_date"  property="createDate"/>
+		<result column="stu_id"  property="stuId"/>
+		<result column="status"  property="status"/>
+		<result column="attach"  property="attach"/>
+	</resultMap>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Request">
+		insert into tb_request(
+			title,
+			reason,
+			type,
+			create_date,
+			stu_id,
+			status,
+			attach
+		)values(
+			#{title},
+			#{reason},
+			#{type},
+			#{createDate},
+			#{stuId},
+			#{status},
+			#{attach}
+		)
+	</insert>
+
+	<select id="query" resultMap="Request">
+		select * from tb_request
+		<include refid="RequestFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_request
+		<include refid="RequestFindCriteria"/>
+	</select>
+
+	<select id="detail" resultMap="Request">
+		select * from tb_request where id = #{id}
+	</select>
+
+	<delete id="delete">
+		delete from tb_request where id = #{id}
+	</delete>
+	<update id="update">
+		update tb_request set
+			title=#{title},
+			reason=#{reason},
+			type=#{type},
+			create_date=#{createDate},
+			stu_id=#{stuId},
+			status=#{status},
+			attach=#{attach}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_request set
+			<if test="title != null and title != ''"> title = #{title}</if>,
+			<if test="reason != null and reason != ''"> reason = #{reason}</if>,
+			<if test="type != null and type != ''"> type = #{type}</if>,
+			<if test="createDate != null and createDate != ''"> create_date = #{createDate}</if>,
+			<if test="stuId != null">stu_id = #{stuId}</if>,
+			<if test="status != null">status = #{status}</if>,
+			<if test="attach != null and attach != ''"> attach = #{attach}</if>
+		where id = #{id}
+	</update>
+
+	<sql id="RequestFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="title != null and title != ''">and title = #{title}</if>
+			<if test="reason != null and reason != ''">and reason = #{reason}</if>
+			<if test="type != null and type != ''">and type = #{type}</if>
+			<if test="stuId != null">and stu_id = #{stuId}</if>
+			<if test="status != null">and status = #{status}</if>
+			<if test="attach != null and attach != ''">and attach = #{attach}</if>
+		</where>
+	</sql>
+
+</mapper>

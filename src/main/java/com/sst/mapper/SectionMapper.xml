@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.SectionMapper">
+
+	<resultMap type="com.sst.entity.Section" id="Section">
+		<id column="id" property="id"/>
+		<result column="year"  property="year"/>
+		<result column="type"  property="type"/>
+		<result column="clazz_id"  property="clazzId"/>
+		<result column="teacher_id"  property="teacherId"/>
+		<result column="course_id"  property="courseId"/>
+		<result column="remark"  property="remark"/>
+	</resultMap>
+
+	<select id="queryStudentSection" resultType="com.sst.entity.Section">
+		SELECT tb_section.id id,tb_section.type type,tb_section.clazz_id clazzId,tb_section.teacher_id teacherId,tb_section.course_id courseId,tb_section.remark remark
+ from tb_student LEFT JOIN tb_section on tb_student.clazz_id=tb_section.clazz_id where tb_student.id = #{id}
+	</select>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Section">
+		insert into tb_section(
+			year,
+			type,
+			clazz_id,
+			teacher_id,
+			course_id,
+			remark
+		)values(
+			#{year},
+			#{type},
+			#{clazzId},
+			#{teacherId},
+			#{courseId},
+			#{remark}
+		)
+	</insert>
+
+	<select id="query" resultMap="Section">
+		select * from tb_section
+		<include refid="SectionFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_section
+		<include refid="SectionFindCriteria"/>
+	</select>
+
+	<select id="detail" resultMap="Section">
+		select * from tb_section where id = #{id}
+	</select>
+
+	<delete id="delete">
+		delete from tb_section where id = #{id}
+	</delete>
+	<update id="update">
+		update tb_section set
+			year=#{year},
+			type=#{type},
+			clazz_id=#{clazzId},
+			teacher_id=#{teacherId},
+			course_id=#{courseId},
+			remark=#{remark}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_section set
+			<if test="year != null">year = #{year}</if>,
+			<if test="type != null and type != ''"> type = #{type}</if>,
+			<if test="clazzId != null">clazz_id = #{clazzId}</if>,
+			<if test="teacherId != null">teacher_id = #{teacherId}</if>,
+			<if test="courseId != null">course_id = #{courseId}</if>,
+			<if test="remark != null and remark != ''"> remark = #{remark}</if>
+		where id = #{id}
+	</update>
+
+	<sql id="SectionFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="year != null">and year = #{year}</if>
+			<if test="type != null and type != ''">and type = #{type}</if>
+			<if test="clazzId != null">and clazz_id = #{clazzId}</if>
+			<if test="teacherId != null">and teacher_id = #{teacherId}</if>
+			<if test="courseId != null">and course_id = #{courseId}</if>
+			<if test="remark != null and remark != ''">and remark = #{remark}</if>
+		</where>
+	</sql>
+
+</mapper>

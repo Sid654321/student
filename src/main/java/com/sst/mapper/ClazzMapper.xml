@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.ClazzMapper">
+
+	<resultMap type="com.sst.entity.Clazz" id="Clazz">
+		<id column="id" property="id"/>
+		<result column="clazz_name"  property="clazzName"/>
+		<result column="subject_id"  property="subjectId"/>
+		<result column="remark"  property="remark"/>
+	</resultMap>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Clazz">
+		insert into tb_clazz(
+			clazz_name,
+			subject_id,
+			remark
+		)values(
+			#{clazzName},
+			#{subjectId},
+			#{remark}
+		)
+	</insert>
+
+	<select id="query" resultMap="Clazz">
+		select * from tb_clazz
+		<include refid="ClazzFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_clazz
+		<include refid="ClazzFindCriteria"/>
+	</select>
+
+	<select id="detail" resultMap="Clazz">
+		select * from tb_clazz where id = #{id}
+	</select>
+
+	<delete id="delete">
+		delete from tb_clazz where id = #{id}
+	</delete>
+	<update id="update">
+		update tb_clazz set
+			clazz_name=#{clazzName},
+			subject_id=#{subjectId},
+			remark=#{remark}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_clazz set
+			<if test="clazzName != null and clazzName != ''"> clazz_name = #{clazzName}</if>,
+			<if test="subjectId != null">subject_id = #{subjectId}</if>,
+			<if test="remark != null and remark != ''"> remark = #{remark}</if>
+		where id = #{id}
+	</update>
+
+	<sql id="ClazzFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="clazzName != null and clazzName != ''">and clazz_name = #{clazzName}</if>
+			<if test="subjectId != null">and subject_id = #{subjectId}</if>
+			<if test="remark != null and remark != ''">and remark = #{remark}</if>
+		</where>
+	</sql>
+
+</mapper>

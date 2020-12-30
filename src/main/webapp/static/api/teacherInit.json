@@ -1,0 +1,36 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "main"
+  },
+  "logoInfo": {
+    "title": "XX大学",
+    "image": "static/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+
+    {
+      "title": "老师管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "type": "3",
+      "child": [
+        {
+          "title": "成绩管理",
+          "href": "score/listOnTeacher",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "学生查询",
+          "href": "student/listByTeacher",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        }
+      ]
+    }
+
+  ]
+}

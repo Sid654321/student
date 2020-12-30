@@ -1,0 +1,119 @@
+{
+  "homeInfo": {
+    "title": "首页",
+    "href": "main"
+  },
+  "logoInfo": {
+    "title": "帽儿山小学校",
+    "image": "static/images/logo.png",
+    "href": ""
+  },
+  "menuInfo": [
+    {
+      "title": "系统管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "type": "1",
+      "child": [
+        {
+          "title": "专业管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "班级管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "学生管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "老师管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "课程管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "用户管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "申请审批",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "学生管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "type": "2",
+      "child": [
+        {
+          "title": "选课管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "成绩查询",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "申请管理",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        }
+      ]
+    },
+    {
+      "title": "老师管理",
+      "icon": "fa fa-address-book",
+      "href": "",
+      "target": "_self",
+      "type": "3",
+      "child": [
+        {
+          "title": "成绩查询",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "学生查询",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        },
+        {
+          "title": "申请审批",
+          "href": "",
+          "icon": "fa fa-calendar",
+          "target": "_self"
+        }
+      ]
+    }
+
+  ]
+}

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.SubjectMapper">
+
+	<resultMap type="com.sst.entity.Subject" id="Subject">
+		<id column="id" property="id"/>
+		<result column="subject_name"  property="subjectName"/>
+		<result column="college"  property="college"/>
+		<result column="remark"  property="remark"/>
+	</resultMap>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Subject">
+		insert into tb_subject(
+			subject_name,
+			college,
+			remark
+		)values(
+			#{subjectName},
+			#{college},
+			#{remark}
+		)
+	</insert>
+
+	<select id="query" resultMap="Subject">
+		select * from tb_subject
+		<include refid="SubjectFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_subject
+		<include refid="SubjectFindCriteria"/>
+	</select>
+
+	<select id="detail" resultMap="Subject">
+		select * from tb_subject
+		<include refid="SubjectFindCriteriaPrecisely"/>
+	</select>
+
+	<delete id="delete">
+		delete from tb_subject where id = #{id}
+
+	</delete>
+	<update id="update">
+		update tb_subject set
+			subject_name=#{subjectName},
+			college=#{college},
+			remark=#{remark}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_subject set
+			<if test="subjectName != null and subjectName != ''"> subject_name = #{subjectName}</if>,
+			<if test="college != null and college != ''"> college = #{college}</if>,
+			<if test="remark != null and remark != ''"> remark = #{remark}</if>
+		where id = #{id}
+	</update>
+
+	<sql id="SubjectFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="subjectName != null and subjectName != ''">and subject_name like concat('%',#{subjectName},'%')</if>
+			<if test="college != null and college != ''">and college like concat('%',#{college},'%')</if>
+			<if test="remark != null and remark != ''">and remark like concat('%',#{remark},'%')</if>
+		</where>
+	</sql>
+
+	<sql id="SubjectFindCriteriaPrecisely">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="subjectName != null and subjectName != ''">and subject_name = #{subjectName}</if>
+			<if test="college != null and college != ''">and college = #{college}</if>
+			<if test="remark != null and remark != ''">and remark = #{remark}</if>
+		</where>
+	</sql>
+
+</mapper>

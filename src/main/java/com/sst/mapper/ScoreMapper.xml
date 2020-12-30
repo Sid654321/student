@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sst.mapper.ScoreMapper">
+
+	<resultMap type="com.sst.entity.Score" id="Score">
+		<id column="id" property="id"/>
+		<result column="section_id"  property="sectionId"/>
+		<result column="course_id"  property="courseId"/>
+		<result column="stu_id"  property="stuId"/>
+		<result column="score"  property="score"/>
+	</resultMap>
+
+	<insert id="create" keyProperty="id" useGeneratedKeys="true" parameterType="com.sst.entity.Score">
+		insert into tb_score(
+			section_id,
+			course_id,
+			stu_id,
+			score
+		)values(
+			#{sectionId},
+			#{courseId},
+			#{stuId},
+			#{score}
+		)
+	</insert>
+
+	<select id="query" resultMap="Score">
+		select * from tb_score
+		<include refid="ScoreFindCriteria"/>
+<!--		<if test="offset!=null and rows!=null">limit ${offset} , ${rows}</if>-->
+	</select>
+
+
+	<select id="count" resultType="int">
+		select count(1) from tb_score
+		<include refid="ScoreFindCriteria"/>
+	</select>
+
+	<select id="queryForTeacher" resultType="com.sst.entity.Score">
+		SELECT tb_score.id id,score,tb_section.type type,tb_section.clazz_id clazzId,tb_section.id sectionId,tb_score.stu_id stuId,tb_section.course_id courseId
+ from tb_score LEFT JOIN tb_section on tb_score.section_id=tb_section.id where tb_section.teacher_id = #{teacherId}
+    <if test="clazzId != null"> and tb_score.clazzId = ${clazzId}</if>
+	</select>
+
+	<select id="detail" resultMap="Score">
+		select * from tb_score where id = #{id}
+	</select>
+
+	<select id="distinctCourse" resultType="Integer">
+		select DISTINCT course_id courseId from tb_score
+	</select>
+
+	<delete id="delete">
+		delete from tb_score
+		<include refid="ScoreFindCriteria"/>
+	</delete>
+	<update id="update">
+		update tb_score set
+			section_id=#{sectionId},
+			course_id=#{courseId},
+			stu_id=#{stuId},
+			score=#{score}
+		where id = #{id}
+	</update>
+
+	<update id="updateSelective">
+		update tb_score
+		<trim prefix="set" suffixOverrides=",">
+			<if test="sectionId != null">section_id = #{sectionId},</if>
+			<if test="courseId != null">course_id = #{courseId},</if>
+			<if test="stuId != null">stu_id = #{stuId},</if>
+			<if test="score != null">score = #{score},</if>
+		</trim>
+		where id = #{id}
+	</update>
+
+	<sql id="ScoreFindCriteria">
+		<where>
+			<if test="id != null">and id = #{id}</if>
+			<if test="sectionId != null">and section_id = #{sectionId}</if>
+			<if test="courseId != null">and course_id = #{courseId}</if>
+			<if test="stuId != null">and stu_id = #{stuId}</if>
+			<if test="score != null">and score = #{score}</if>
+		</where>
+	</sql>
+
+</mapper>
